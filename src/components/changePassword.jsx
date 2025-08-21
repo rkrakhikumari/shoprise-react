@@ -31,7 +31,7 @@ const ChangePassword = () => {
           </label>
           <input
             type={showPassword ? 'text' : 'password'}
-            className="w-full border rounded-md p-2 pr-10 focus:outline-none border-[#D3D3D3]"
+            className="placeholder-[#333333] w-full border rounded-md p-2 pr-10 focus:outline-none border-[#D3D3D3]"
             placeholder="********"
           />
           <span
@@ -49,7 +49,7 @@ const ChangePassword = () => {
           </label>
           <input
             type={showConfirmPassword ? 'text' : 'password'}
-            className="w-full border rounded-md p-2 pr-10 focus:outline-none border-[#D3D3D3]"
+            className="placeholder-[#333333] w-full border rounded-md p-2 pr-10 focus:outline-none border-[#D3D3D3]"
             placeholder="********"
           />
           <span

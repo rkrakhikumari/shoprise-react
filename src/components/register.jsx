@@ -2,11 +2,10 @@ import React from "react";
 import registerImg from "../assets/register.png";
 import userImg from "../assets/user.png";
 import googleImg from "../assets/google.png";
-import EyeImg from "../assets/eye.png";
-import { Link, useNavigate } from "react-router-dom";
 import { AiOutlineEyeInvisible } from "react-icons/ai";
+import { Link, useNavigate } from "react-router-dom";
 
-const LoginPage = () => {
+const RegisterPage = () => {
   const navigate = useNavigate();
 
   return (
@@ -25,13 +24,11 @@ const LoginPage = () => {
           <img src={userImg} alt="User" className="w-5 mb-2" />
 
           {/* Welcome Text */}
-          <h2 className="text-xl font-semibold text-[#333333] mb-1">
-            Welcome back
-          </h2>
-          <p className="text-sm text-gray-500 mb-3 text-center">
-            Don’t have account?{" "}
-            <Link to="/register" className="text-orange-500 underline">
-              Sign up here
+          <h2 className="text-xl font-semibold text-[#333333] mb-1">Welcome back</h2>
+          <p className="text-xs text-gray-500 mb-3">
+            You have account?{" "}
+            <Link to="/signin" className="text-orange-500 underline">
+              Sign in here
             </Link>
           </p>
 
@@ -41,7 +38,7 @@ const LoginPage = () => {
             style={{ borderColor: "#D3D3D3", color: "#333333" }}
           >
             <img src={googleImg} alt="Google" className="w-4" />
-            <span>Sign in with Google</span>
+            <span>Sign up with Google</span>
           </button>
 
           {/* OR Divider */}
@@ -51,18 +48,27 @@ const LoginPage = () => {
             <hr className="flex-grow border-gray-300" />
           </div>
 
-          {/* Email Input */}
-          <div className="w-full max-w-[300px] relative mb-3 text-xs text-[#333333]">
-            Email
-            <input
-              type="text"
-              placeholder="johndoe@gmail.com"
-              className="placeholder-[#333333] w-full border rounded-md p-2 pr-8 mt-1 text-sm"
-              style={{ borderColor: "#D3D3D3" }}
-            />
-          </div>
+          {/* Inputs */}
+          {[
+            { label: "First name", placeholder: "John" },
+            { label: "Last name", placeholder: "DOE" },
+            { label: "Email", placeholder: "johndoe@gmail.com" },
+          ].map((field, idx) => (
+            <div
+              key={idx}
+              className="w-full max-w-[300px] relative mb-3 text-xs text-[#333333]"
+            >
+              {field.label}
+              <input
+                type="text"
+                placeholder={field.placeholder}
+                className="placeholder-[#333333] w-full border rounded-md p-2 pr-8 mt-1 text-sm"
+                style={{ borderColor: "#D3D3D3" }}
+              />
+            </div>
+          ))}
 
-          {/* Password */}
+          {/* Password Field */}
           <div className="w-full max-w-[300px] relative mb-2 text-xs text-[#333333]">
             Password
             <input
@@ -76,23 +82,17 @@ const LoginPage = () => {
             </span>
           </div>
 
-          {/* Remember Me & Forgot Password */}
-          <div className="flex justify-between items-center w-full max-w-[300px] text-sm mb-3">
-            <label className="flex items-center gap-2 text-[#333333]">
-              <input type="checkbox" />
-              Remember me
-            </label>
-            <Link to="/change-password" className="underline text-[#1F3A93]">
-              Forgot password
-            </Link>
-          </div>
+          {/* Indication */}
+          <p className="w-full max-w-[300px] text-[10px] text-[#1F3A93] mb-3">
+            Indication
+          </p>
 
-          {/* Sign In Button */}
+          {/* Register Button */}
           <button
             className="w-full max-w-[300px] bg-[#1F3A93] hover:bg-[#15307A] text-white py-2 text-sm rounded-full"
             onClick={() => navigate("/john-doe")}
           >
-            Sign in
+            Register
           </button>
         </div>
       </div>
@@ -101,7 +101,7 @@ const LoginPage = () => {
       <div className="hidden md:block w-full md:w-[70%] h-full">
         <img
           src={registerImg}
-          alt="Login"
+          alt="Register"
           className="w-full h-full object-cover"
         />
       </div>
@@ -109,4 +109,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default RegisterPage;

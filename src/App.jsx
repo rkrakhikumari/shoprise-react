@@ -1,71 +1,89 @@
 import React from "react";
-import { Menu, ChevronDown, Search } from "lucide-react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-const Header = () => {
+import LoginPage from "./components/loginPage";
+import ChangePassword from "./components/changePassword";
+import Header from "./components/header";
+import ProductGrid from "./components/products";
+import Footer from "./components/footer";
+import SigninHeader from "./components/signinHeader";
+import NotificationPanel from "./components/notifications";
+import Register from "./components/register";
+import FAQContent from "./components/faq";
+import BlogComponent from "./components/blogComponent";
+import AboutUs from "./components/aboutUs";
+import BlogPostPage from "./components/BlogPostPage";
+import ProductPage from "./components/ProductPage";
+import DashboardLayout from "./components/DashboardLayout";
+import Dashboard from "./components/Dashboard";
+import Favourites from "./components/Favourites";
+import Purchasing from "./components/Purchasing"; 
+import SalesOrders from './components/SalesOrders'; 
+import VehicleAdForm from './components/VehicleFormPage';
+import RealEstateAdForm from "./components/RealEstateFormPage"
+import ItemAdForm from "./components/ItemFormPage"
+import ChatPage from "./components/ChatPage"
+import SettingContent from "./components/settingPage"
+import ChooseAdType from "./components/chooseAdType"
+
+
+
+const App = () => {
   return (
-    <header className="w-full border-b border-[#D3D3D3] bg-white font-inter text-[#333]">
-      {/* Top Row */}
-      <div className="flex items-center justify-between px-4 md:px-8 py-3">
-        {/* Left: Logo */}
-        <div className="flex items-center gap-2">
-          <div className="w-9 h-9 rounded-full bg-[#D3D3D3]" />
-          <span className="text-lg font-semibold">ShopRise</span>
-        </div>
+    <Router>
+      <Routes>
+        {/* Authentication */}
+        <Route path="/signin" element={<LoginPage />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/change-password" element={<ChangePassword />} />
 
-        {/* Center: Main Nav */}
-        <nav className="hidden md:flex gap-8 text-sm">
-          <a href="#" className="text-orange-500 font-medium">All listing</a>
-          <a href="#" className="hover:text-black">About us</a>
-          <a href="#" className="hover:text-black">FAQ</a>
-          <a href="#" className="hover:text-black">Blog</a>
-        </nav>
+        {/* Public Landing */}
+        <Route path="/" element={<><Header /><ProductGrid /><Footer /></>} />
 
-        {/* Right: Sign In */}
-        <button className="bg-[#1F3A93] hover:bg-[#15307A] text-white px-6 py-2 rounded-full text-sm">
-          Sign In
-        </button>
-      </div>
+        {/* Signed-in Landing */}
+        <Route path="/john-doe" element={<><SigninHeader /><ProductGrid /><Footer /></>} />
 
-      {/* Bottom Row */}
-      <div className="flex flex-wrap md:flex-nowrap items-center justify-between px-4 md:px-8 py-3 border-t border-[#D3D3D3]">
-        {/* Left: Categories & Filters */}
-        <div className="flex flex-wrap items-center gap-4 md:gap-6 text-sm mb-3 md:mb-0">
-          <button className="flex items-center gap-2 text-black">
-            <Menu size={18} />
-            Categories
-            <ChevronDown size={14} />
-          </button>
+        {/* Static Content */}
+        <Route path="/faq" element={<><Header /><FAQContent /><Footer /></>} />
+        <Route path="/blog" element={<><Header /><BlogComponent /><Footer /></>} />
+        <Route path="/about-us" element={<><Header /><AboutUs /><Footer /></>} />
+        <Route path="/blog/exotic-cities-to-visit" element={<><BlogPostPage /><Footer /></>} />
 
-          <span className="h-6 w-px bg-gray-400 hidden md:inline-block" />
+        {/* Product Detail */}
+        <Route path="/product" element={<><SigninHeader /><ProductPage /></>} />
 
-          <a href="#" className="hover:text-black">For you</a>
-          <a href="#" className="hover:text-black">Local</a>
-          <a href="#" className="hover:text-black">Selling</a>
-          <a href="#" className="hover:text-black">Buying</a>
-
-          <button className="flex items-center gap-1 text-black">
-            More
-            <ChevronDown size={14} />
-          </button>
-        </div>
-
-        {/* Right: Search Bar */}
-        <div className="flex items-center border border-gray-300 rounded-full overflow-hidden w-full md:w-auto max-w-full">
-          <div className="px-3 text-gray-500">
-            <Search size={16} />
+        {/* Notifications */}
+        <Route path="/notifications" element={
+          <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+            <NotificationPanel />
           </div>
-          <input
-            type="text"
-            placeholder="Search..."
-            className="px-2 py-1 text-sm outline-none flex-grow min-w-0"
-          />
-          <button className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-1.5 text-sm rounded-full">
-            Search
-          </button>
-        </div>
-      </div>
-    </header>
+        } />
+        {/* Dashboard Area */}
+        <Route path="/dashboard" element={<DashboardLayout><Dashboard /></DashboardLayout>} />
+        <Route path="/favourites" element={<DashboardLayout><Favourites /></DashboardLayout>} />
+        <Route path="/purchasing" element={<DashboardLayout><Purchasing /></DashboardLayout>} />
+        <Route path="/chat" element={<DashboardLayout><ChatPage /></DashboardLayout>} />
+        <Route path="/settings" element={<DashboardLayout><SettingContent /></DashboardLayout>} />
+
+        <Route path="/sales" element={<DashboardLayout><SalesOrders /></DashboardLayout>} />
+        <Route path="/item" element={<DashboardLayout><ItemAdForm/></DashboardLayout>} />
+        <Route path="/new-listing" element={<DashboardLayout><ChooseAdType /></DashboardLayout>}/>
+
+
+  <Route path="vehicle" element={<DashboardLayout><VehicleAdForm/></DashboardLayout>} />
+  <Route path="real-estate" element={<DashboardLayout><RealEstateAdForm/></DashboardLayout>} />
+
+
+
+
+        
+
+
+        {/* Catch-All Route */}
+        <Route path="*" element={<h1 className="text-center text-2xl mt-20">404 - Page Not Found</h1>} />
+      </Routes>
+    </Router>
   );
 };
 
-export default Header;
+export default App;
