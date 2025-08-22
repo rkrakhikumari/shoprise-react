@@ -58,7 +58,6 @@ const ProductGrid = () => {
             type="search"
             aria-label="Search products"
             className="px-2 py-2.5 text-sm outline-none flex-grow min-w-0"
-            placeholder="Search products"
             readOnly
           />
           <button

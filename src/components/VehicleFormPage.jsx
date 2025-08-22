@@ -7,7 +7,7 @@ import clockImg from "../assets/clock.png";
 import locationImg from "../assets/location.png"; 
 import heartImg from "../assets/heart.png"; 
 import locImg from "../assets/sale_loc.png"; 
-import AddImg from "../assets/add-image.png"
+import AddImg from "../assets/add-image.png";
 
 const product = {
   title: 'Toyota Camry 2025',
@@ -18,8 +18,8 @@ const product = {
   location: 'Los Angeles, CA',
   timeAgo: '3 hours ago',
   condition: 'Used like new',
-  year : '2015',
-  brand :'Toyota',
+  year: '2015',
+  brand: 'Toyota',
   model: 'Camry',
   images: [prodImg, prodImg, prodImg, prodImg],
   seller: {
@@ -39,9 +39,10 @@ const VehicleAdForm = () => {
     <div className="pt-3 px-4 md:px-10">
       <button
         onClick={() => navigate(-1)}
-        className="mb-6 text-[#333] flex items-center gap-2"
+        className="mb-6 text-[#333] flex items-center gap-2 cursor-pointer"
+        aria-label="Go Back"
       >
-        <img src={arrowImg} alt="Back" className="w-4 h-4 md:w-5 md:h-5" />
+        <img src={arrowImg} alt="Back arrow" className="w-4 h-4 md:w-5 md:h-5" />
         <span className='text-[#1F3A93] font-medium text-sm md:text-base'>Back</span>
       </button>
 
@@ -62,10 +63,13 @@ const VehicleAdForm = () => {
             </div>
             <div className="mb-4">
               <label className="text-md font-semibold block mb-1">
-                Photos (0/10). <span className='text-sm font-medium'> You can add up to 10 photos.</span>
+                Photos (0/10). <span className='text-sm font-medium'>You can add up to 10 photos.</span>
               </label>
-              <div className="w-full h-32 flex flex-col items-center justify-center border border-[#D3D3D3] rounded">
-                <img src={AddImg} alt="Add" className="w-8 h-8 mb-2" />
+              <div
+                className="w-full h-32 flex flex-col items-center justify-center border border-[#D3D3D3] rounded cursor-pointer"
+                aria-label="Add photos"
+              >
+                <img src={AddImg} alt="Add photos" className="w-8 h-8 mb-2" />
                 <p className="text-sm text-[#333333] font-medium">Add photos</p>
                 <p className="text-xs text-gray-500">Or drag and drop</p>
               </div>
@@ -81,9 +85,8 @@ const VehicleAdForm = () => {
 
               <div className="mb-4">
                 <label className="text-md font-semibold">Location</label>
-
                 <div className="flex items-center border border-[#D3D3D3] px-3 py-2 mt-1 rounded bg-white">
-                  <img src={locationImg} alt="Location" className="w-4 h-4 mr-2" />
+                  <img src={locationImg} alt="Location icon" className="w-4 h-4 mr-2" />
                   <span className="text-sm md:text-base text-gray-800">{product.location}</span>
                 </div>
               </div>
@@ -131,10 +134,10 @@ const VehicleAdForm = () => {
           <div className="grid grid-cols-4 gap-2 mt-2">
             {product.images.map((img, i) => (
               <img
-                key={i}
+                key={`${img}-${i}`} // stable key
                 src={img}
                 alt={`Thumbnail ${i + 1}`}
-                className={`w-full h-20 object-cover rounded cursor-pointer border ${i === 0 ? 'border-orange-500' : 'border-gray-300'}`}
+                className={`w-full h-20 object-cover rounded cursor-pointer border ${selectedImage === img ? 'border-orange-500' : 'border-gray-300'}`}
                 onClick={() => setSelectedImage(img)}
               />
             ))}
@@ -150,19 +153,25 @@ const VehicleAdForm = () => {
 
           <div className="flex flex-wrap items-center gap-4 text-sm md:text-base text-gray-500 mt-4">
             <span className="flex items-center gap-1">
-              <img src={clockImg} alt="Clock" className="w-4 h-4" />
+              <img src={clockImg} alt="Clock icon" className="w-4 h-4" />
               {product.timeAgo}
             </span>
             <span className="text-gray-300 hidden sm:inline">|</span>
             <span className="flex items-center gap-1">
-              <img src={locationImg} alt="Location" className="w-4 h-4" />
+              <img src={locationImg} alt="Location icon" className="w-4 h-4" />
               {product.location}
             </span>
           </div>
 
           <div className="mt-3 flex items-center gap-2 text-sm md:text-base text-[#333]">
-            <img src={heartImg} alt="heart" className="w-7 h-7" />
-            Add to favorites
+            <button
+              type="button"
+              className="flex items-center gap-2 cursor-pointer focus:outline-none"
+              aria-label="Add to favorites"
+            >
+              <img src={heartImg} alt="Heart icon" className="w-7 h-7" />
+              Add to favorites
+            </button>
           </div>
 
           <h3 className="text-[#1F3A93] text-xl md:text-2xl mt-3 font-bold">
@@ -173,7 +182,7 @@ const VehicleAdForm = () => {
           </h3>
 
           <div className="mt-5">
-            <img src={locImg} alt="Map" className="w-full h-auto object-cover rounded" />
+            <img src={locImg} alt="Map location" className="w-full h-auto object-cover rounded" />
           </div>
 
           <div className="mt-5">
@@ -200,7 +209,7 @@ const VehicleAdForm = () => {
             </div>
           </div>
 
-          {/* Message Box */}
+          {/* Message Box (disabled) */}
           <div className="mt-5 pb-5 max-w-md opacity-90 pointer-events-none select-none">
             <label htmlFor="message" className="text-sm md:text-base font-medium text-gray-400">
               Send a message to the seller

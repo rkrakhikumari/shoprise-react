@@ -63,7 +63,7 @@ const ChatPage = () => {
             className="px-2 py-2.5 text-sm outline-none flex-grow min-w-0"
           />
           <button
-            className="bg-[#FF7F50] text-white px-4 py-2.5 text-sm rounded-full shrink-0"
+            className="bg-[#FF7F50] text-white px-4 py-2.5 text-sm rounded-full shrink-0 cursor-pointer"
             aria-label="Search chats"
           >
             Search

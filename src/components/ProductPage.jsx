@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { Link } from "react-router-dom";
+
 import prodImg from "../assets/product.png";
 import locImg from "../assets/loc.png";
 import jeniImg from "../assets/jeni.png";
@@ -47,57 +49,47 @@ export default function ProductPage() {
   };
 
   return (
-    <>
-      <style>{`
-        @media (max-width: 1024px) {
-          .main-content { flex-direction: column !important; padding-left: 15px !important; padding-right: 15px !important; }
-          .left-column, .middle-column, .right-column { width: 100% !important; flex: none !important; }
-          .thumbnail-grid { grid-template-columns: repeat(3, 1fr) !important; }
-          .seller-info-container { gap: 20px !important; flex-wrap: wrap !important; }
-          .checkout-container { width: 100% !important; margin-top: 20px; }
-          input[type="text"], input[type="number"] { font-size: 16px !important; }
-          button { font-size: 16px !important; }
-        }
-        @media (max-width: 480px) {
-          .thumbnail-grid { grid-template-columns: repeat(2, 1fr) !important; }
-          .left-column img { height: auto !important; }
-          .seller-info-container { flex-direction: column !important; gap: 10px !important; }
-          .seller-info-container > div:last-child { align-items: flex-start !important; }
-          .checkout-container { padding: 15px !important; }
-        }
-      `}</style>
-
+    <div>
       {/* Breadcrumb */}
-      <div className="border-t border-b border-gray-300 text-[#333333] flex items-center gap-1 py-2 text-l pt-4 pb-4 pl-7">
-        <div className="text-[#333333]">All listing</div>
-        <div className="select-none text-[#333333] pl-2 pr-2">{'>'}</div>
-        <div className="text-[#1F3A93] font-medium cursor-pointer">Products</div>
+      <div className="border-t border-b border-gray-300 text-gray-800 flex items-center gap-1 py-2 text-lg pt-4 pb-4 pl-7">
+        <Link
+        to="/"
+        className="text-gray-800 cursor-pointer"
+        role="link"
+        aria-label="Go to all listings"
+      >
+        All listing
+      </Link>
+        <div className="select-none text-gray-800 pl-2 pr-2">{'>'}</div>
+        <div className="text-blue-800 font-medium cursor-pointer">Products</div>
       </div>
 
       {/* Main content */}
-      <div className="main-content" style={{ display: 'flex', margin: 'auto', gap: 20, fontFamily: 'Arial, sans-serif', paddingLeft: 30, paddingTop: 30, paddingRight: 30 }}>
+      <div className="flex flex-col lg:flex-row gap-5 font-sans px-4 lg:px-8 pt-8">
         {/* Left: Images */}
-        <div className="left-column" style={{ flex: 1 }}>
-          <img src={selectedImage} alt={`Selected product: ${product.title}`} style={{ width: '100%', borderRadius: 5 }} />
-          <div className="thumbnail-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10, marginTop: 10 }}>
+        <div className="flex-1">
+          <img 
+            src={prodImg} 
+            alt={`Selected product: ${product.title}`} 
+            className="w-full rounded" 
+          />
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 mt-3">
             {product.images.map((img, i) => (
               <button
                 key={i}
                 onClick={() => setSelectedImage(img)}
+                className={`p-0 bg-transparent rounded-lg cursor-pointer ${
+                  selectedImage === img ? 'border border-orange-500' : 'border border-gray-300'
+                }`}
                 style={{
-                  padding: 0,
-                  border: 'none',
-                  background: 'transparent',
-                  borderRadius: 10,
-                  border: selectedImage === img ? '2px solid orange' : '1px solid #ccc',
-                  cursor: 'pointer'
+                  border: selectedImage === img ? '1px solid orange' : '1px solid #ccc',
                 }}
                 aria-label={`Select product image ${i + 1}`}
               >
                 <img
                   src={img}
                   alt={`Product thumbnail ${i + 1}`}
-                  style={{ width: '100%', height: 80, objectFit: 'cover', borderRadius: 10 }}
+                  className="w-full h-20 object-cover rounded-lg"
                 />
               </button>
             ))}
@@ -105,79 +97,64 @@ export default function ProductPage() {
         </div>
 
         {/* Middle: Details */}
-        <div className="middle-column" style={{ flex: 1.5 }}>
-          <div style={{ color: '#333333', fontSize: 18 }}>{product.category}</div>
-          <h2 style={{ color: '#FF7F50', marginTop: 0, fontSize: 24 }}>{product.title}</h2>
-          <p style={{ fontSize: 14, color: '#333333' }}>Description</p>
-          <p style={{ fontSize: 12, color: '#333333' }}>{product.description}</p>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 15, fontSize: 12, color: 'gray', marginTop: 10 }}>
-            <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-              <img src={clockImg} alt="Posted time" style={{ width: 14, height: 14 }} />
+        <div className="flex-1 lg:flex-grow">
+          <div className="text-gray-800 text-lg">{product.category}</div>
+          <h2 className="text-orange-400 mt-0 text-2xl">{product.title}</h2>
+          <p className="text-sm text-gray-800 mt-0">Description</p>
+          <p className="text-xs text-gray-800">{product.description}</p>
+          
+          <div className="flex items-center gap-4 text-xs text-gray-500 mt-2">
+            <span className="flex items-center gap-1">
+              <img src={clockImg} alt="Posted time" className="w-3.5 h-3.5" />
               {product.timeAgo}
             </span>
-            <span style={{ color: '#ccc' }}>|</span>
-            <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-              <img src={locationImg} alt="Location icon" style={{ width: 14, height: 14 }} />
+            <span className="text-gray-300">|</span>
+            <span className="flex items-center gap-1">
+              <img src={locationImg} alt="Location icon" className="w-3.5 h-3.5" />
               {product.location}
             </span>
           </div>
 
-          <div style={{ marginTop: 10, font: 14, color: '#333333', display: 'flex', alignItems: 'center', gap: 6 }}>
-            <button
-              style={{ display: 'flex', alignItems: 'center', gap: 6, background: 'none', border: 'none', cursor: 'pointer', color: '#333' }}
-              aria-label="Add to favorites"
-            >
-              <img src={heartImg} alt="Add to favorites icon" />
-              Add to favorites
-            </button>
+          <div className="mt-2 flex items-center gap-1.5 text-sm text-gray-800">
+            <img src={heartImg} alt="Add to favorites icon" className="w-4 h-4" />
+            <span>Add to favorites</span>
           </div>
 
-          <h3 style={{ color: '#1F3A93', marginTop: 10 }}>
-            ${product.price.toFixed(2)} <span style={{ fontSize: 16, color: '#333333' }}>({product.condition})</span>
+          <h3 className="text-blue-800 mt-2 text-xl">
+            ${product.price.toFixed(2)} 
+            <span className="text-base text-gray-800 ml-2">({product.condition})</span>
           </h3>
 
-          <div style={{ marginTop: 20 }}>
+          {/* Map Image */}
+          <div className="mt-5">
             <img
               src={locImg}
               alt="Map showing seller's location"
-              style={{ width: '100%', height: 200, objectFit: 'cover', borderRadius: 8 }}
+              className="w-full h-48 object-cover rounded-lg"
             />
           </div>
 
           {/* Seller info */}
-          <div className="seller-info-container" style={{ marginTop: 20 }}>
-            <div style={{ fontWeight: '600', marginBottom: 8 }}>Seller</div>
-            <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 40, flexWrap: 'wrap' }}>
-              <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+          <div className="mt-5">
+            <div className="font-semibold mb-2">Seller</div>
+            <div className="flex justify-start items-start gap-10 flex-wrap">
+              <div className="flex gap-3 items-center">
                 <img
                   src={product.seller.avatar}
                   alt={`Avatar of ${product.seller.name}`}
-                  style={{ width: 50, height: 50, borderRadius: '50%' }}
+                  className="w-12 h-12 rounded-full"
                 />
                 <div>
-                  <div style={{ fontWeight: 500 }}>{product.seller.name}</div>
-                  <div style={{ fontSize: 12, color: 'gray' }}>Join {product.seller.joinDate}</div>
+                  <div className="font-medium">{product.seller.name}</div>
+                  <div className="text-xs text-gray-500">Join {product.seller.joinDate}</div>
                 </div>
               </div>
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-                <div style={{ fontSize: 14, color: 'orange', display: 'flex', alignItems: 'center', gap: 2 }}>
+              <div className="flex flex-col items-end">
+                <div className="text-sm text-orange-500 flex items-center gap-1">
                   <span>{'★'.repeat(product.seller.rating)}</span>
-                  <span style={{ fontSize: 12, color: '#333' }}>({product.seller.reviewsCount})</span>
+                  <span className="text-xs text-gray-800">({product.seller.reviewsCount})</span>
                 </div>
-                <button
-                  style={{
-                    backgroundColor: '#1F3A93',
-                    color: 'white',
-                    border: 'none',
-                    padding: '6px 20px',
-                    borderRadius: 999,
-                    fontSize: 14,
-                    cursor: 'pointer',
-                    marginTop: 6,
-                    minWidth: 90
-                  }}
-                  aria-label="Follow seller"
-                >
+                <button className="bg-blue-800 text-white border-none px-5 py-1.5 rounded-full text-sm cursor-pointer mt-1.5 min-w-20">
                   Follow
                 </button>
               </div>
@@ -185,45 +162,19 @@ export default function ProductPage() {
           </div>
 
           {/* Message seller */}
-          <div style={{ marginTop: 20, paddingBottom: 20 }}>
-            <label htmlFor="message" style={{ fontSize: 14, fontWeight: 500 }}>Send a message to the seller</label>
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              marginTop: 8,
-              border: '1px solid #ccc',
-              borderRadius: 999,
-              backgroundColor: '#fff',
-              overflow: 'hidden',
-              maxWidth: 400
-            }}>
+          <div className="mt-5 pb-5">
+            <label htmlFor="message" className="text-sm font-medium">Send a message to the seller</label>
+            <div className="flex items-center mt-2 border border-gray-300 rounded-full bg-white overflow-hidden max-w-md">
               <input
                 id="message"
                 type="text"
                 value={messageText}
                 onChange={(e) => setMessageText(e.target.value)}
                 placeholder="Hello, is this article still available?"
-                style={{
-                  flex: 1,
-                  border: 'none',
-                  outline: 'none',
-                  fontSize: 14,
-                  padding: '8px 12px',
-                  borderRadius: 0
-                }}
+                className="flex-1 border-none outline-none text-sm px-3 py-2"
                 aria-label="Message input"
               />
-              <button
-                style={{
-                  backgroundColor: '#1F3A93',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: 999,
-                  padding: '8px 24px',
-                  fontSize: 14,
-                  cursor: 'pointer'
-                }}
-              >
+              <button className="bg-blue-800 text-white border-none rounded-full px-6 py-2 text-sm cursor-pointer">
                 Send
               </button>
             </div>
@@ -231,186 +182,87 @@ export default function ProductPage() {
         </div>
         
         {/* Right: Checkout or Make Offer */}
-        <div
-          className="checkout-container"
-          style={{
-            flex: 0.8,
-            border: '1px solid #ddd',
-            borderRadius: 8,
-            padding: 20,
-            height: 'fit-content',
-            fontSize: 14,
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-          }}
-        >
+        <div className="w-full lg:w-80 border border-gray-300 rounded-lg p-5 h-fit text-sm flex flex-col justify-between mt-5 lg:mt-0">
           {!showOfferForm ? (
             // Checkout View
             <div>
-              <h3 style={{ textAlign: 'center', marginBottom: 20, color: '#333333', fontWeight: 'bold', fontSize: 20 }}>Checkout</h3>
+              <h3 className="text-center mb-5 text-gray-800 font-bold text-xl">Checkout</h3>
 
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
+              <div className="flex justify-between mb-1">
                 <span>Price</span>
-                <span style={{ color: '#1F3A93' }}>${product.price.toFixed(2)}</span>
+                <span className="text-blue-800">${product.price.toFixed(2)}</span>
               </div>
 
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
+              <div className="flex justify-between mb-2">
                 <span>Delivery fee</span>
-                <span style={{ color: '#1F3A93' }}>${product.deliveryFee.toFixed(2)}</span>
+                <span className="text-blue-800">${product.deliveryFee.toFixed(2)}</span>
               </div>
 
-              <hr style={{ borderTop: '2px dotted #999', margin: '15px 0' }} />
+              <hr className="border-t-2 border-dotted border-gray-400 my-4" />
 
-              <div style={{ display: 'flex', justifyContent: 'flex-end', fontWeight: 'bold', fontSize: 18, color: '#333333' }}>
+              <div className="flex justify-end font-bold text-lg text-gray-800">
                 <span>${totalPrice}</span>
               </div>
 
-              <div style={{ marginTop: 15, display: 'flex', gap: 10 }}>
-                <button
-                  style={{
-                    flex: 1,
-                    border: '1px solid #FF7F50',
-                    backgroundColor: 'white',
-                    color: '#FF7F50',
-                    padding: '10px 0',
-                    borderRadius: 9999,
-                    cursor: 'pointer',
-                    fontWeight: '500',
-                    fontSize: 14,
-                  }}
-                >
+              <div className="mt-4 flex gap-2">
+                <button className="flex-1 border border-orange-400 bg-white text-orange-400 py-2.5 rounded-full cursor-pointer font-medium text-sm">
                   Buy now
                 </button>
 
                 <button
-                  style={{
-                    flex: 1,
-                    border: 'none',
-                    backgroundColor: 'gray',
-                    color: 'white',
-                    padding: '10px 0',
-                    borderRadius: 9999,
-                    cursor: 'pointer',
-                    fontWeight: '500',
-                    fontSize: 14,
-                  }}
+                  className="flex-1 border-none bg-gray-500 text-white py-2.5 rounded-full cursor-pointer font-medium text-sm"
                   onClick={() => setShowOfferForm(true)}
                 >
                   Make offer
                 </button>
               </div>
 
-              <button
-                style={{
-                  marginTop: 10,
-                  width: '100%',
-                  backgroundColor: '#1F3A93',
-                  color: 'white',
-                  border: 'none',
-                  padding: '12px 0',
-                  borderRadius: 9999,
-                  cursor: 'pointer',
-                  fontWeight: '500',
-                  fontSize: 14,
-                }}
-              >
+              <button className="mt-2 w-full bg-blue-800 text-white border-none py-3 rounded-full cursor-pointer font-medium text-sm">
                 Paypal checkout
               </button>
 
-              <small
-                style={{
-                  marginTop: 20,
-                  color: '#333333',
-                  fontSize: 12,
-                  lineHeight: 1.4,
-                  paddingLeft: 12,
-                  paddingRight: 12,
-                  textAlign: 'center',
-                  display: 'block',
-                }}
-              >
+              <small className="mt-5 text-gray-800 text-xs leading-relaxed px-3 text-center block">
                 By continuing to checkout, you agree to the{' '}
-                <a href="#" style={{ color: '#1F3A93', textDecoration: 'underline' }}>Privacy Policy</a>{' '}
+                <a href="#" className="text-blue-800 underline">Privacy Policy</a>{' '}
                 and{' '}
-                <a href="#" style={{ color: '#1F3A93', textDecoration: 'underline' }}>Terms of Service</a>.
+                <a href="#" className="text-blue-800 underline">Terms of Service</a>.
               </small>
             </div>
           ) : (
             // Make Offer View
             <div>
-              <h3 style={{ textAlign: 'center', marginBottom: 20, color: '#333333', fontWeight: 'bold', fontSize: 20 }}>Make offer</h3>
+              <h3 className="text-center mb-5 text-gray-800 font-bold text-xl">Make offer</h3>
 
-              <label style={{ fontStyle: 'italic' }}>Enter your offer</label>
+              <label className="italic">Enter your offer</label>
               <input
                 type="number"
                 placeholder="$7.46"
                 value={offerPrice}
                 onChange={(e) => setOfferPrice(e.target.value)}
-                className="placeholder-black"
-                style={{
-                  width: '100%',
-                  padding: 10,
-                  border: '1px solid #ccc',
-                  borderRadius: 6,
-                  marginBottom: 20,
-                  marginTop: 5,
-                }}
+                className="w-full p-2.5 border border-gray-300 rounded placeholder-black mb-5 mt-1"
               />
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10, fontSize: '18px' }}>
+              <div className="flex justify-between mb-2 text-lg">
                 <span>Delivery fee</span>
-                <span style={{ color: '#1F3A93', fontWeight: '500', fontSize: '16px' }}>${product.deliveryFee.toFixed(2)}</span>
+                <span className="text-blue-800 font-medium text-base">${product.deliveryFee.toFixed(2)}</span>
               </div>
 
-              <hr style={{ borderTop: '1px dashed #ccc', margin: '15px 0' }} />
+              <hr className="border-t border-dashed border-gray-300 my-4" />
 
-              <div style={{
-                display: 'flex',
-                justifyContent: 'flex-end',
-                fontSize: 20,
-                fontWeight: 'bold',
-                color: '#333333',
-                marginBottom: 10
-              }}>
+              <div className="flex justify-end text-xl font-bold text-gray-800 mb-2">
                 ${offerTotal}
               </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              <div className="flex flex-col gap-2">
                 {/* Make Offer Button */}
                 <button
-                  style={{
-                    height: '44px',
-                    backgroundColor: '#1F3A93',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '9999px',
-                    fontSize: '16px',
-                    fontWeight: '500',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    marginTop: '10px'
-                  }}
+                  className="h-11 bg-blue-800 text-white border-none rounded-full text-base font-medium cursor-pointer flex justify-center items-center mt-2"
                   onClick={handleOfferSubmit}
                 >
                   Make offer
                 </button>
 
-                {/* Cancel Button - now functional */}
+                {/* Cancel Button */}
                 <button
-                  style={{
-                    height: '44px',
-                    backgroundColor: '#999999',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '9999px',
-                    fontSize: '16px',
-                    fontWeight: '500',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
+                  className="h-11 bg-gray-400 text-white border-none rounded-full text-base font-medium cursor-pointer flex justify-center items-center"
                   onClick={handleCancelOffer}
                 >
                   Cancel
@@ -420,6 +272,6 @@ export default function ProductPage() {
           )}
         </div>
       </div>
-    </>
+    </div>
   );
 }
