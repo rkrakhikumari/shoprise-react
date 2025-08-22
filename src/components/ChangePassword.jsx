@@ -50,7 +50,7 @@ const ChangePassword = () => {
           <button
             type="button"
             onClick={() => setShowNewPassword(!showNewPassword)}
-            className="absolute right-2 top-[34px] text-gray-500"
+            className="absolute right-2 top-[34px] text-gray-500 cursor-pointer"
             aria-label={showNewPassword ? 'Hide password' : 'Show password'}
           >
             {showNewPassword ? (
@@ -80,7 +80,7 @@ const ChangePassword = () => {
           <button
             type="button"
             onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-            className="absolute right-2 top-[34px] text-gray-500"
+            className="absolute right-2 top-[34px] text-gray-500 cursor-pointer"
             aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
           >
             {showConfirmPassword ? (

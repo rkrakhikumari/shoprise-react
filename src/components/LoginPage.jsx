@@ -14,7 +14,6 @@ const LoginPage = () => {
   const navigate = useNavigate();
 
   const handleSignIn = () => {
-    // Example sign in logic could be added here
     navigate("/john-doe");
   };
 
@@ -117,10 +116,12 @@ const LoginPage = () => {
           </div>
 
           {/* Remember Me & Forgot Password */}
-          <div className="flex justify-between items-center w-full max-w-[300px] text-sm mb-3">
-            <label className="flex items-center gap-2 text-[#333333]" htmlFor="rememberMe">
+          <div className="flex justify-between items-center w-full max-w-[300px] text-sm mb-3 cursor-pointer">
+            <label className="flex items-center gap-2 text-[#333333] cursor-pointer " htmlFor="rememberMe ">
               <input
                 id="rememberMe"
+                className="cursor-pointer"
+
                 type="checkbox"
                 checked={remember}
                 onChange={() => setRemember(!remember)}
