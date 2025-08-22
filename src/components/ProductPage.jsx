@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import prodImg from "../assets/product.png"
-import locImg from "../assets/loc.png"
-import jeniImg from "../assets/jeni.png"
-import clockImg from "../assets/clock.png"
-import locationImg from "../assets/location.png"
-import heartImg from "../assets/heart.png"
+import prodImg from "../assets/product.png";
+import locImg from "../assets/loc.png";
+import jeniImg from "../assets/jeni.png";
+import clockImg from "../assets/clock.png";
+import locationImg from "../assets/location.png";
+import heartImg from "../assets/heart.png";
 
 const product = {
   title: 'Trolley sprayer',
@@ -15,12 +15,7 @@ const product = {
   location: 'Los Angeles, CA',
   timeAgo: '3 hours ago',
   condition: 'Used like new',
-  images: [
-    prodImg,
-    prodImg,
-    prodImg,
-    prodImg,
-  ],
+  images: [prodImg, prodImg, prodImg, prodImg],
   seller: {
     name: 'Jennifer Garnet',
     joinDate: 'Oct 2023',
@@ -31,170 +26,132 @@ const product = {
 };
 
 export default function ProductPage() {
-
   const [showOfferForm, setShowOfferForm] = useState(false);
   const [offerPrice, setOfferPrice] = useState('');
-
   const [selectedImage, setSelectedImage] = useState(product.images[0]);
+  const [messageText, setMessageText] = useState('Hello, is this article still available?');
+  
+  // Dynamically calculate total for offer form
+  const offerTotal = offerPrice ? (parseFloat(offerPrice) + product.deliveryFee).toFixed(2) : '20.96';
   const totalPrice = (product.price + product.deliveryFee).toFixed(2);
+
+  const handleOfferSubmit = () => {
+    if (offerPrice) {
+      alert(`Offer submitted: $${offerPrice}`);
+    }
+  };
+
+  const handleCancelOffer = () => {
+    setShowOfferForm(false);
+    setOfferPrice('');
+  };
 
   return (
     <>
       <style>{`
         @media (max-width: 1024px) {
-          .main-content {
-            flex-direction: column !important;
-            padding-left: 15px !important;
-            padding-right: 15px !important;
-          }
-          .left-column, .middle-column, .right-column {
-            width: 100% !important;
-            flex: none !important;
-          }
-          .thumbnail-grid {
-            grid-template-columns: repeat(3, 1fr) !important;
-          }
-          .seller-info-container {
-            gap: 20px !important;
-            flex-wrap: wrap !important;
-          }
-          .checkout-container {
-            width: 100% !important;
-            margin-top: 20px;
-          }
-          input[type="text"], input[type="number"] {
-            font-size: 16px !important;
-          }
-          button {
-            font-size: 16px !important;
-          }
+          .main-content { flex-direction: column !important; padding-left: 15px !important; padding-right: 15px !important; }
+          .left-column, .middle-column, .right-column { width: 100% !important; flex: none !important; }
+          .thumbnail-grid { grid-template-columns: repeat(3, 1fr) !important; }
+          .seller-info-container { gap: 20px !important; flex-wrap: wrap !important; }
+          .checkout-container { width: 100% !important; margin-top: 20px; }
+          input[type="text"], input[type="number"] { font-size: 16px !important; }
+          button { font-size: 16px !important; }
         }
-
         @media (max-width: 480px) {
-          .thumbnail-grid {
-            grid-template-columns: repeat(2, 1fr) !important;
-          }
-          .left-column img {
-            height: auto !important;
-          }
-          .seller-info-container {
-            flex-direction: column !important;
-            gap: 10px !important;
-          }
-          .seller-info-container > div:last-child {
-            align-items: flex-start !important;
-          }
-          .checkout-container {
-            padding: 15px !important;
-          }
+          .thumbnail-grid { grid-template-columns: repeat(2, 1fr) !important; }
+          .left-column img { height: auto !important; }
+          .seller-info-container { flex-direction: column !important; gap: 10px !important; }
+          .seller-info-container > div:last-child { align-items: flex-start !important; }
+          .checkout-container { padding: 15px !important; }
         }
       `}</style>
 
       {/* Breadcrumb */}
       <div className="border-t border-b border-gray-300 text-[#333333] flex items-center gap-1 py-2 text-l pt-4 pb-4 pl-7">
-        <div className='text-[#333333]'>All listing</div>
+        <div className="text-[#333333]">All listing</div>
         <div className="select-none text-[#333333] pl-2 pr-2">{'>'}</div>
         <div className="text-[#1F3A93] font-medium cursor-pointer">Products</div>
       </div>
+
       {/* Main content */}
-      <div
-        className="main-content"
-        style={{ display: 'flex', margin: 'auto', gap: 20, fontFamily: 'Arial, sans-serif', paddingLeft: 30, paddingTop: 30, paddingRight: 30 }}
-      >
+      <div className="main-content" style={{ display: 'flex', margin: 'auto', gap: 20, fontFamily: 'Arial, sans-serif', paddingLeft: 30, paddingTop: 30, paddingRight: 30 }}>
         {/* Left: Images */}
         <div className="left-column" style={{ flex: 1 }}>
-          <img
-            src={selectedImage}
-            alt={product.title}
-            style={{ width: '100%', borderRadius: 5 }}
-          />
-          <div
-            className="thumbnail-grid"
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(4, 1fr)',
-              gap: 10,
-              marginTop: 10
-            }}
-          >
+          <img src={selectedImage} alt={`Selected product: ${product.title}`} style={{ width: '100%', borderRadius: 5 }} />
+          <div className="thumbnail-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10, marginTop: 10 }}>
             {product.images.map((img, i) => (
-              <img
+              <button
                 key={i}
-                src={img}
-                alt={`Thumbnail ${i + 1}`}
-                style={{
-                  width: '100%',
-                  height: 80,
-                  objectFit: 'cover',
-                  borderRadius: 10,
-                  cursor: 'pointer',
-                  border: selectedImage === img ? '1px solid orange' : '1px solid #ccc',
-                }}
                 onClick={() => setSelectedImage(img)}
-              />
+                style={{
+                  padding: 0,
+                  border: 'none',
+                  background: 'transparent',
+                  borderRadius: 10,
+                  border: selectedImage === img ? '2px solid orange' : '1px solid #ccc',
+                  cursor: 'pointer'
+                }}
+                aria-label={`Select product image ${i + 1}`}
+              >
+                <img
+                  src={img}
+                  alt={`Product thumbnail ${i + 1}`}
+                  style={{ width: '100%', height: 80, objectFit: 'cover', borderRadius: 10 }}
+                />
+              </button>
             ))}
           </div>
         </div>
+
         {/* Middle: Details */}
         <div className="middle-column" style={{ flex: 1.5 }}>
           <div style={{ color: '#333333', fontSize: 18 }}>{product.category}</div>
           <h2 style={{ color: '#FF7F50', marginTop: 0, fontSize: 24 }}>{product.title}</h2>
-          <p style={{ fontSize: 14, color: '#333333' }}>Description </p>
+          <p style={{ fontSize: 14, color: '#333333' }}>Description</p>
           <p style={{ fontSize: 12, color: '#333333' }}>{product.description}</p>
           <div style={{ display: 'flex', alignItems: 'center', gap: 15, fontSize: 12, color: 'gray', marginTop: 10 }}>
             <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-              <img src={clockImg} alt="Clock" style={{ width: 14, height: 14 }} />
+              <img src={clockImg} alt="Posted time" style={{ width: 14, height: 14 }} />
               {product.timeAgo}
             </span>
             <span style={{ color: '#ccc' }}>|</span>
             <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-              <img src={locationImg} alt="Location" style={{ width: 14, height: 14 }} />
+              <img src={locationImg} alt="Location icon" style={{ width: 14, height: 14 }} />
               {product.location}
             </span>
           </div>
-          <div style={{
-            marginTop: 10,
-            font: 14,
-            color: '#333333',
-            display: 'flex',
-            alignItems: 'center',
-            gap: 6
-          }}>
-            <img src={heartImg} alt="heart" />
-            Add to favorites
+
+          <div style={{ marginTop: 10, font: 14, color: '#333333', display: 'flex', alignItems: 'center', gap: 6 }}>
+            <button
+              style={{ display: 'flex', alignItems: 'center', gap: 6, background: 'none', border: 'none', cursor: 'pointer', color: '#333' }}
+              aria-label="Add to favorites"
+            >
+              <img src={heartImg} alt="Add to favorites icon" />
+              Add to favorites
+            </button>
           </div>
+
           <h3 style={{ color: '#1F3A93', marginTop: 10 }}>
             ${product.price.toFixed(2)} <span style={{ fontSize: 16, color: '#333333' }}>({product.condition})</span>
           </h3>
 
-          {/* Map Image */}
           <div style={{ marginTop: 20 }}>
             <img
               src={locImg}
-              alt="Location"
-              style={{
-                width: '100%',
-                height: 200,
-                objectFit: 'cover',
-                borderRadius: 8
-              }}
+              alt="Map showing seller's location"
+              style={{ width: '100%', height: 200, objectFit: 'cover', borderRadius: 8 }}
             />
           </div>
-          {/* Seller info container */}
+
+          {/* Seller info */}
           <div className="seller-info-container" style={{ marginTop: 20 }}>
             <div style={{ fontWeight: '600', marginBottom: 8 }}>Seller</div>
-
-            <div style={{
-              display: 'flex',
-              justifyContent: 'flex-start',
-              alignItems: 'flex-start',
-              gap: 40,
-              flexWrap: 'wrap'
-            }}>
+            <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-start', gap: 40, flexWrap: 'wrap' }}>
               <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
                 <img
                   src={product.seller.avatar}
-                  alt={product.seller.name}
+                  alt={`Avatar of ${product.seller.name}`}
                   style={{ width: 50, height: 50, borderRadius: '50%' }}
                 />
                 <div>
@@ -202,7 +159,6 @@ export default function ProductPage() {
                   <div style={{ fontSize: 12, color: 'gray' }}>Join {product.seller.joinDate}</div>
                 </div>
               </div>
-              {/* Right: Stars and Follow button stacked */}
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
                 <div style={{ fontSize: 14, color: 'orange', display: 'flex', alignItems: 'center', gap: 2 }}>
                   <span>{'★'.repeat(product.seller.rating)}</span>
@@ -218,33 +174,34 @@ export default function ProductPage() {
                     fontSize: 14,
                     cursor: 'pointer',
                     marginTop: 6,
-                    minWidth: 90,
-                    alignSelf: 'flex-end'
+                    minWidth: 90
                   }}
+                  aria-label="Follow seller"
                 >
                   Follow
                 </button>
               </div>
             </div>
           </div>
+
           {/* Message seller */}
           <div style={{ marginTop: 20, paddingBottom: 20 }}>
             <label htmlFor="message" style={{ fontSize: 14, fontWeight: 500 }}>Send a message to the seller</label>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                marginTop: 8,
-                border: '1px solid #ccc',
-                borderRadius: 999,
-                backgroundColor: '#fff',
-                overflow: 'hidden',
-                maxWidth: 400
-              }}
-            >
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              marginTop: 8,
+              border: '1px solid #ccc',
+              borderRadius: 999,
+              backgroundColor: '#fff',
+              overflow: 'hidden',
+              maxWidth: 400
+            }}>
               <input
                 id="message"
                 type="text"
+                value={messageText}
+                onChange={(e) => setMessageText(e.target.value)}
                 placeholder="Hello, is this article still available?"
                 style={{
                   flex: 1,
@@ -254,6 +211,7 @@ export default function ProductPage() {
                   padding: '8px 12px',
                   borderRadius: 0
                 }}
+                aria-label="Message input"
               />
               <button
                 style={{
@@ -271,6 +229,7 @@ export default function ProductPage() {
             </div>
           </div>
         </div>
+        
         {/* Right: Checkout or Make Offer */}
         <div
           className="checkout-container"
@@ -287,7 +246,7 @@ export default function ProductPage() {
           }}
         >
           {!showOfferForm ? (
-            // === Checkout View ===
+            // Checkout View
             <div>
               <h3 style={{ textAlign: 'center', marginBottom: 20, color: '#333333', fontWeight: 'bold', fontSize: 20 }}>Checkout</h3>
 
@@ -378,7 +337,7 @@ export default function ProductPage() {
               </small>
             </div>
           ) : (
-            // === Make Offer View ===
+            // Make Offer View
             <div>
               <h3 style={{ textAlign: 'center', marginBottom: 20, color: '#333333', fontWeight: 'bold', fontSize: 20 }}>Make offer</h3>
 
@@ -413,7 +372,7 @@ export default function ProductPage() {
                 color: '#333333',
                 marginBottom: 10
               }}>
-                $20.96
+                ${offerTotal}
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                 {/* Make Offer Button */}
@@ -432,12 +391,12 @@ export default function ProductPage() {
                     alignItems: 'center',
                     marginTop: '10px'
                   }}
-                  onClick={() => alert(`Offer submitted: $${offerPrice}`)}
+                  onClick={handleOfferSubmit}
                 >
                   Make offer
                 </button>
 
-                {/* Cancel Button */}
+                {/* Cancel Button - now functional */}
                 <button
                   style={{
                     height: '44px',
@@ -447,12 +406,12 @@ export default function ProductPage() {
                     borderRadius: '9999px',
                     fontSize: '16px',
                     fontWeight: '500',
-                    cursor: 'not-allowed',
+                    cursor: 'pointer',
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
                   }}
-                  disabled
+                  onClick={handleCancelOffer}
                 >
                   Cancel
                 </button>

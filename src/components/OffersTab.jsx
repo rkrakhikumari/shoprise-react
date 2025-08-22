@@ -4,13 +4,13 @@ import profileImg from "../assets/Profil.png";
 import dateImg from "../assets/date.png";
 
 const sampleOffers = [
-  { date: "18 March", product: "Litter troller sprayer", seller: "Jackson Smith", offer: "$300", price: "$300", status: "Accepted" },
-  { date: "18 March", product: "Litter troller sprayer", seller: "Jackson Smith", offer: "$300", price: "$300", status: "Pending" },
-  { date: "18 March", product: "Litter troller sprayer", seller: "Jackson Smith", offer: "$300", price: "$300", status: "Pending" },
-  { date: "18 March", product: "Litter troller sprayer", seller: "Jackson Smith", offer: "$300", price: "$300", status: "Declined" },
-  { date: "18 March", product: "Litter troller sprayer", seller: "Jackson Smith", offer: "$300", price: "$300", status: "Declined" },
-  { date: "18 March", product: "Litter troller sprayer", seller: "Jackson Smith", offer: "$300", price: "$300", status: "Accepted" },
-  { date: "18 March", product: "Litter troller sprayer", seller: "Jackson Smith", offer: "$300", price: "$300", status: "Accepted" },
+  { id: 1, date: "18 March", product: "Litter troller sprayer", seller: "Jackson Smith", offer: "$300", price: "$300", status: "Accepted" },
+  { id: 2, date: "18 March", product: "Litter troller sprayer", seller: "Jackson Smith", offer: "$300", price: "$300", status: "Pending" },
+  { id: 3, date: "18 March", product: "Litter troller sprayer", seller: "Jackson Smith", offer: "$300", price: "$300", status: "Pending" },
+  { id: 4, date: "18 March", product: "Litter troller sprayer", seller: "Jackson Smith", offer: "$300", price: "$300", status: "Declined" },
+  { id: 5, date: "18 March", product: "Litter troller sprayer", seller: "Jackson Smith", offer: "$300", price: "$300", status: "Declined" },
+  { id: 6, date: "18 March", product: "Litter troller sprayer", seller: "Jackson Smith", offer: "$300", price: "$300", status: "Accepted" },
+  { id: 7, date: "18 March", product: "Litter troller sprayer", seller: "Jackson Smith", offer: "$300", price: "$300", status: "Accepted" },
 ];
 
 const statusColors = {
@@ -33,7 +33,7 @@ const OffersTab = () => {
       {/* Top Filters: Status + Date */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
         {/* Status Buttons */}
-        <div className="flex flex-wrap gap-2 text-xs sm:text-sm">
+        <div className="flex flex-wrap gap-2 text-xs sm:text-sm cursor-pointer">
           {["All", "Accepted", "Pending", "Declined"].map((status) => (
             <button
               key={status}
@@ -42,7 +42,10 @@ const OffersTab = () => {
                 statusFilter === status
                   ? "bg-[#A9DCC5] text-[#333333]"
                   : "bg-transparent text-[#333]"
-              }`}
+              } cursor-pointer`}
+              aria-pressed={statusFilter === status}
+              aria-label={`Filter offers by ${status}`}
+              type="button"
             >
               {status}
             </button>
@@ -58,8 +61,21 @@ const OffersTab = () => {
               value={dateRange}
               onChange={(e) => setDateRange(e.target.value)}
               className="text-xs sm:text-sm placeholder-black outline-none bg-transparent w-full"
+              aria-label="Filter by date range"
+              autoComplete="off"
             />
-            <img src={dateImg} className="w-4 h-4 ml-2" alt="Calendar" />
+            <button
+              type="button"
+              aria-label="Open date picker"
+              className="ml-2 cursor-pointer"
+            >
+              <img
+                src={dateImg}
+                className="w-4 h-4"
+                alt=""
+                aria-hidden="true"
+              />
+            </button>
           </div>
         </div>
       </div>
@@ -80,13 +96,13 @@ const OffersTab = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredOffers.map((offer, idx) => (
-              <tr key={idx} className="border-t border-gray-200">
+            {filteredOffers.map((offer) => (
+              <tr key={offer.id} className="border-t border-gray-200">
                 <td className="px-4 py-3 whitespace-nowrap">{offer.date}</td>
                 <td className="px-4 py-3">
                   <img
                     src={productImg}
-                    alt="product"
+                    alt={`Image of ${offer.product}`}
                     className="w-12 h-12 rounded-md object-cover"
                   />
                 </td>
@@ -95,14 +111,21 @@ const OffersTab = () => {
                   <div className="flex items-center gap-2">
                     <img
                       src={profileImg}
-                      alt="seller"
+                      alt={`Profile of ${offer.seller}`}
                       className="w-8 h-8 rounded-full"
                     />
                     <span>{offer.seller}</span>
                   </div>
                 </td>
-                <td className="px-4 py-3 text-blue-600 underline cursor-pointer whitespace-nowrap">
-                  Go to chat
+                <td className="px-4 py-3 whitespace-nowrap">
+                  <button
+                    className="text-blue-600 underline cursor-pointer"
+                    onClick={() => alert(`Go to chat with ${offer.seller}`)}
+                    aria-label={`Go to chat with ${offer.seller}`}
+                    type="button"
+                  >
+                    Go to chat
+                  </button>
                 </td>
                 <td className="px-4 py-3 whitespace-nowrap">{offer.offer}</td>
                 <td className="px-4 py-3 whitespace-nowrap">{offer.price}</td>
@@ -120,15 +143,45 @@ const OffersTab = () => {
       </div>
 
       {/* Pagination */}
-      <div className="flex justify-center items-center gap-2 p-4 text-xs sm:text-sm">
-        <button className="px-3 py-1 hover:bg-gray-100">&lt;</button>
-        <button className="px-3 py-1 bg-[#D3D3D3]">1</button>
-        <button className="px-3 py-1 hover:bg-gray-100">2</button>
-        <button className="px-3 py-1 hover:bg-gray-100">3</button>
-        <span className="px-2">...</span>
-        <button className="px-3 py-1 hover:bg-gray-100">9</button>
-        <button className="px-3 py-1 hover:bg-gray-100">&gt;</button>
-      </div>
+      <nav
+        className="flex justify-center items-center gap-2 p-4 text-xs sm:text-sm"
+        role="navigation"
+        aria-label="Pagination"
+      >
+        <button
+          className="px-3 py-1 hover:bg-gray-100 cursor-pointer"
+          aria-label="Previous page"
+          type="button"
+        >
+          &lt;
+        </button>
+        <button
+          className="px-3 py-1 bg-[#D3D3D3] cursor-pointer"
+          aria-current="page"
+          type="button"
+        >
+          1
+        </button>
+        <button className="px-3 py-1 hover:bg-gray-100 cursor-pointer" type="button">
+          2
+        </button>
+        <button className="px-3 py-1 hover:bg-gray-100 cursor-pointer" type="button">
+          3
+        </button>
+        <span className="px-2" aria-hidden="true">
+          ...
+        </span>
+        <button className="px-3 py-1 hover:bg-gray-100 cursor-pointer" type="button">
+          9
+        </button>
+        <button
+          className="px-3 py-1 hover:bg-gray-100 cursor-pointer"
+          aria-label="Next page"
+          type="button"
+        >
+          &gt;
+        </button>
+      </nav>
     </div>
   );
 };

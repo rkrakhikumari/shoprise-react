@@ -36,7 +36,7 @@ const DashboardLayout = ({ children }) => {
   ];
 
   const navLinkClasses = ({ isActive }) =>
-    `flex items-center gap-3 px-3 py-2 rounded-md ${
+    `flex items-center gap-3 px-3 py-2 rounded-md cursor-pointer ${
       isActive ? "bg-white text-[#FF7F50]" : "hover:bg-white"
     }`;
 
@@ -49,70 +49,63 @@ const DashboardLayout = ({ children }) => {
         fixed top-0 left-0 z-50 h-screen md:static md:h-auto
         ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0
         p-5 flex flex-col`}
+        aria-label="Sidebar navigation"
       >
         {/* Mobile close button */}
         <div className="flex justify-between items-center md:hidden mb-4">
           <span className="text-lg font-semibold">Menu</span>
-          <button onClick={toggleMobileMenu}>
-            <RxCross2 className="w-3 h-3" />
+          <button onClick={toggleMobileMenu} aria-label="Close menu" type="button">
+            <RxCross2 className="w-5 h-5" />
           </button>
         </div>
 
         {/* Logo */}
         <Link
           to="/"
-          className={`flex items-center gap-3 mb-6 ${
-            collapsed ? "justify-center" : ""
-          }`}
+          className={`flex items-center gap-3 mb-6 ${collapsed ? "justify-center" : ""}`}
+          aria-label="ShopRise Home"
         >
-          <div className="w-8 h-8 rounded-full bg-[#D3D3D3]" />
+          <div className="w-8 h-8 rounded-full bg-[#D3D3D3]" aria-hidden="true" />
           {!collapsed && <span className="text-lg font-semibold">ShopRise</span>}
         </Link>
 
-        {/* Sidebar content wrapper */}
-        <div className="flex flex-col flex-grow overflow-hidden">
+        <nav className="flex flex-col flex-grow overflow-hidden" role="navigation" aria-label="Primary sidebar navigation">
           {/* Top menu */}
           <div
-            className={`flex flex-col gap-4 text-sm font-medium overflow-y-auto ${
+            className={`flex flex-col gap-4 text-sm font-medium ${
               collapsed ? "items-center" : ""
             }`}
             style={{ flexGrow: 1 }}
           >
             {menuItems.map(({ to, icon: Icon, label }) => (
-              <NavLink key={to} to={to} className={navLinkClasses}>
-                {({ isActive }) => (
-                  <>
-                    <Icon
-                      className={`w-5 h-5 ${
-                        isActive ? "text-[#FF7F50]" : "text-[#333]"
-                      }`}
-                    />
-                    {!collapsed && label}
-                  </>
-                )}
+              <NavLink
+                key={to}
+                to={to}
+                className={navLinkClasses}
+                aria-label={label}
+                tabIndex={0}
+              >
+                <Icon className="w-5 h-5 flex-shrink-0" aria-hidden="true" />
+                {!collapsed && label}
               </NavLink>
             ))}
 
-            {/* Footer links on mobile */}
             <div className="flex flex-col gap-4 text-sm font-medium mt-6 md:hidden">
               {footerLinks.map(({ to, icon: Icon, label }) => (
-                <NavLink key={to} to={to} className={navLinkClasses}>
-                  {({ isActive }) => (
-                    <>
-                      <Icon
-                        className={`w-5 h-5 ${
-                          isActive ? "text-[#FF7F50]" : "text-[#333]"
-                        }`}
-                      />
-                      {!collapsed && label}
-                    </>
-                  )}
+                <NavLink
+                  key={to}
+                  to={to}
+                  className={navLinkClasses}
+                  aria-label={label}
+                  tabIndex={0}
+                >
+                  <Icon className="w-5 h-5 flex-shrink-0" aria-hidden="true" />
+                  {!collapsed && label}
                 </NavLink>
               ))}
             </div>
           </div>
 
-          {/* Footer links on desktop pinned at bottom */}
           <div
             className={`hidden md:flex flex-col gap-4 text-sm font-medium mt-auto ${
               collapsed ? "items-center" : ""
@@ -120,49 +113,50 @@ const DashboardLayout = ({ children }) => {
             style={{ flexShrink: 0 }}
           >
             {footerLinks.map(({ to, icon: Icon, label }) => (
-              <NavLink key={to} to={to} className={navLinkClasses}>
-                {({ isActive }) => (
-                  <>
-                    <Icon
-                      className={`w-5 h-5 ${
-                        isActive ? "text-[#FF7F50]" : "text-[#333]"
-                      }`}
-                    />
-                    {!collapsed && label}
-                  </>
-                )}
+              <NavLink
+                key={to}
+                to={to}
+                className={navLinkClasses}
+                aria-label={label}
+                tabIndex={0}
+              >
+                <Icon className="w-5 h-5 flex-shrink-0" aria-hidden="true" />
+                {!collapsed && label}
               </NavLink>
             ))}
           </div>
-        </div>
+        </nav>
       </aside>
 
       {/* Main content */}
-      <main className="flex-1 bg-white min-h-screen px-2 sm:px-4 pt-2 pb-6">
+      <main className="flex-1 bg-white min-h-screen px-2 sm:px-4 pt-2 pb-6" role="main">
         {/* Header */}
-        <div className="flex items-center justify-between mb-4 px-2 sm:px-4">
+        <header className="flex items-center justify-between mb-4 px-2 sm:px-4">
           <div className="md:hidden">
-            <button onClick={toggleMobileMenu}>
-              <FiMenu className="w-6 h-6 text-[#1F3A93]" />
+            <button onClick={toggleMobileMenu} aria-label="Open menu" type="button" className="cursor-pointer">
+              <FiMenu className="w-6 h-6 text-[#1F3A93]" aria-hidden="true" />
             </button>
           </div>
 
           <NavLink
             to="/"
-            className="text-sm text-[#333] flex items-center gap-3 ml-auto"
+            className="text-sm text-[#333] flex items-center gap-3 ml-auto cursor-pointer"
+            aria-label="Go to marketplace"
           >
-            <img src={bellImg} alt="Bell Icon" />
+            <img src={bellImg} alt="Notification bell icon" />
             <span className="hidden sm:inline">Go to marketplace</span>
-            <img src={arrowImg} alt="Arrow Icon" />
+            <img src={arrowImg} alt="Arrow icon" />
           </NavLink>
-        </div>
+        </header>
 
         {/* Children */}
         {React.Children.map(children, (child) =>
-          React.cloneElement(child, {
-            collapseSidebar,
-            expandSidebar,
-          })
+          React.isValidElement(child)
+            ? React.cloneElement(child, {
+                collapseSidebar,
+                expandSidebar,
+              })
+            : child
         )}
       </main>
     </div>

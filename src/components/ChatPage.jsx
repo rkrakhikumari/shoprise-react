@@ -7,6 +7,7 @@ import { PiImage } from "react-icons/pi";
 const ChatPage = () => {
   const [selectedChat, setSelectedChat] = useState(true);
   const [activeTab, setActiveTab] = useState("All");
+  const [messageInput, setMessageInput] = useState("");
 
   const messages = [
     {
@@ -54,13 +55,17 @@ const ChatPage = () => {
         {/* Search box aligned top-right */}
         <div className="flex items-center border border-gray-300 rounded-full overflow-hidden w-full md:w-auto max-w-full">
           <div className="px-3 text-gray-500 shrink-0">
-            <img src={searchImg} alt="search" className="w-5 h-5 md:w-6 md:h-6" />
+            <img src={searchImg} alt="Search icon" className="w-5 h-5 md:w-6 md:h-6" />
           </div>
           <input
             type="text"
+            aria-label="Search chats"
             className="px-2 py-2.5 text-sm outline-none flex-grow min-w-0"
           />
-          <button className="bg-[#FF7F50] text-white px-4 py-2.5 text-sm rounded-full shrink-0">
+          <button
+            className="bg-[#FF7F50] text-white px-4 py-2.5 text-sm rounded-full shrink-0"
+            aria-label="Search chats"
+          >
             Search
           </button>
           <div className="w-px h-6 bg-[#D3D3D3] hidden md:block"></div>
@@ -68,15 +73,20 @@ const ChatPage = () => {
       </div>
 
       {/* Tabs above the chat layout */}
-      <div className="flex gap-3 mb-4 text-sm overflow-x-auto">
+      <div
+        className="flex gap-3 mb-4 text-sm overflow-x-auto"
+        role="tablist"
+        aria-label="Chat filter tabs"
+      >
         {tabs.map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
-            className={`px-3 py-1 rounded-md flex-shrink-0 ${
-              activeTab === tab
-                ? 'bg-gray-200 text-[#333] font-medium'
-                : 'text-gray-500'
+            aria-selected={activeTab === tab}
+            role="tab"
+            tabIndex={activeTab === tab ? 0 : -1}
+            className={`px-3 py-1 rounded-md flex-shrink-0 cursor-pointer ${
+              activeTab === tab ? 'bg-gray-200 text-[#333] font-medium' : 'text-gray-500'
             }`}
           >
             {tab}
@@ -89,18 +99,25 @@ const ChatPage = () => {
         {/* Left Panel */}
         <div className="md:w-1/3 w-full flex flex-col">
           {/* Chat List */}
-          <div className="border border-gray-300 rounded-md flex-1 divide-y divide-gray-200">
+          <div
+            className="border border-gray-300 rounded-md flex-1 divide-y divide-gray-200 overflow-y-auto"
+            role="list"
+            aria-label="Chat list"
+          >
             {[...Array(8)].map((_, i) => (
-              <div
+              <button
                 key={i}
-                className={`flex gap-2 p-4 cursor-pointer ${
+                type="button"
+                onClick={() => setSelectedChat(true)}
+                className={`flex gap-2 p-4 cursor-pointer w-full text-left ${
                   i === 3 ? 'bg-gray-200' : 'hover:bg-gray-100'
                 }`}
-                onClick={() => setSelectedChat(true)}
+                aria-current={i === 3 ? 'true' : undefined}
+                role="listitem"
               >
                 <img
                   src={jeniImg}
-                  alt="Jennifer Garnet"
+                  alt="Jennifer Garnet avatar"
                   className="w-11 h-11 rounded-full object-cover flex-shrink-0"
                 />
 
@@ -108,18 +125,20 @@ const ChatPage = () => {
                   <div className="flex justify-between items-start">
                     <span className="text-sm font-semibold truncate">Jennifer Garnet</span>
 
-                    {/* TIME AND DOT vertically stacked */}
-                    <div className="flex flex-col items-center gap-1 shrink-0">
+                    <div
+                      className="flex flex-col items-center gap-1 shrink-0"
+                      aria-label="Message status and time"
+                    >
                       <span className="text-xs text-[#1F3A93]">18:05</span>
-                      <span className="w-2 h-2 bg-[#1F3A93] rounded-full"></span>
+                      <span className="w-2 h-2 bg-[#1F3A93] rounded-full" aria-hidden="true"></span>
                     </div>
                   </div>
 
-                  <p className="text-xs text-gray-600 truncate">
+                  <p className="text-xs text-gray-600 truncate" title="Last message preview">
                     Perfect, I'll take it! How do I proceed with ...
                   </p>
                 </div>
-              </div>
+              </button>
             ))}
           </div>
         </div>
@@ -128,44 +147,76 @@ const ChatPage = () => {
         <div className="md:w-2/3 w-full h-full border border-gray-300 rounded-md flex flex-col bg-white">
           {/* Header */}
           <div className="flex items-center gap-3 border-b border-gray-200 p-4">
-            <img src={jeniImg} alt="Jennifer Garnet" className="w-13 h-13 rounded-full" />
+            <img src={jeniImg} alt="Jennifer Garnet avatar" className="w-13 h-13 rounded-full" />
             <span className="text-sm font-medium">Jennifer Garnet</span>
           </div>
 
           {/* Messages */}
-          <div className="p-5 flex-1 overflow-y-auto">
-            <div className="text-center text-sm text-[#333333] mb-4">Aujourd'hui</div>
+          <div
+            className="p-5 flex-1 overflow-y-auto"
+            aria-live="polite"
+            aria-relevant="additions"
+            tabIndex={-1}
+          >
+            <div className="text-center text-sm text-[#333333] mb-4" aria-label="Date separator">
+              Aujourd'hui
+            </div>
             {messages.map((msg) => (
               <div
                 key={msg.id}
-                className={`mb-3 flex ${
-                  msg.from === 'seller' ? 'justify-end' : 'justify-start'
-                }`}
+                className={`mb-3 flex ${msg.from === 'seller' ? 'justify-end' : 'justify-start'}`}
               >
-                <div
+                <article
                   className={`max-w-md p-2 text-md rounded-md ${
-                    msg.from === 'seller'
-                      ? 'bg-blue-900 text-white'
-                      : 'bg-gray-100 text-gray-800'
+                    msg.from === 'seller' ? 'bg-blue-900 text-white' : 'bg-gray-100 text-gray-800'
                   }`}
+                  aria-label={`${msg.from === 'seller' ? 'Seller' : 'Customer'} message`}
                 >
                   {msg.content}
                   <div className="text-[10px] text-left mt-1 opacity-70">{msg.time}</div>
-                </div>
+                </article>
               </div>
             ))}
           </div>
 
           {/* Input */}
-          <div className="p-2 flex items-center gap-2 border border-gray-300">
-            <PiImage className="w-8 h-8 text-[#1F3A93] cursor-pointer" />
+          <form
+            className="p-2 flex items-center gap-2 border border-gray-300"
+            onSubmit={(e) => {
+              e.preventDefault();
+              setMessageInput("");
+            }}
+          >
+            <button
+              aria-label="Add image"
+              type="button"
+              className="cursor-pointer"
+              onClick={() => alert('Add image clicked')}
+            >
+              <PiImage className="w-8 h-8 text-[#1F3A93]" />
+            </button>
 
             <input
               type="text"
               placeholder="Send a chat"
+              aria-label="Type a message"
               className="bg-gray-200 flex-1 p-2 border border-gray-300 text-sm outline-none"
+              value={messageInput}
+              onChange={(e) => setMessageInput(e.target.value)}
+              autoComplete="off"
             />
-          </div>
+
+            <button
+              type="submit"
+              aria-label="Send message"
+              disabled={!messageInput.trim()}
+              className={`bg-[#1F3A93] text-white px-4 py-2 rounded ${
+                !messageInput.trim() ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
+              }`}
+            >
+              Send
+            </button>
+          </form>
         </div>
       </div>
     </div>

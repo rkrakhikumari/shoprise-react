@@ -3,7 +3,7 @@ import { Mail, Bell } from "lucide-react";
 import profileImg from "../assets/Profil.png";
 import { useNavigate, NavLink } from "react-router-dom";
 import ChatDrawer from "./ChatDrawer";
-import NotificationDrawer from "./notifications";
+import NotificationDrawer from "./Notifications";
 
 const SigninHeader = () => {
   const navigate = useNavigate();

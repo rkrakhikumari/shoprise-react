@@ -1,17 +1,17 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import LoginPage from "./components/loginPage";
-import ChangePassword from "./components/changePassword";
-import Header from "./components/header";
-import ProductGrid from "./components/products";
-import Footer from "./components/footer";
-import SigninHeader from "./components/signinHeader";
-import NotificationPanel from "./components/notifications";
-import Register from "./components/register";
-import FAQContent from "./components/faq";
-import BlogComponent from "./components/blogComponent";
-import AboutUs from "./components/aboutUs";
+import LoginPage from "./components/LoginPage";
+import ChangePassword from "./components/ChangePassword";
+import Header from "./components/Header";
+import ProductGrid from "./components/Products";
+import Footer from "./components/Footer";
+import SigninHeader from "./components/SigninHeader";
+import NotificationPanel from "./components/Notifications";
+import Register from "./components/Register";
+import FAQContent from "./components/Faq";
+import BlogComponent from "./components/BlogComponent";
+import AboutUs from "./components/AboutUs";
 import BlogPostPage from "./components/BlogPostPage";
 import ProductPage from "./components/ProductPage";
 import DashboardLayout from "./components/DashboardLayout";
@@ -23,8 +23,8 @@ import VehicleAdForm from './components/VehicleFormPage';
 import RealEstateAdForm from "./components/RealEstateFormPage"
 import ItemAdForm from "./components/ItemFormPage"
 import ChatPage from "./components/ChatPage"
-import SettingContent from "./components/settingPage"
-import ChooseAdType from "./components/chooseAdType"
+import SettingContent from "./components/SettingPage"
+import ChooseAdType from "./components/ChooseAdType"
 
 
 
